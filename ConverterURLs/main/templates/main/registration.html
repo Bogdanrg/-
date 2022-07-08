@@ -1,0 +1,11 @@
+{% extends 'main/layout.html' %}
+
+{% block content %}
+    <form action="{% url 'registration' %}" method="post" enctype="multipart/form-data">
+    <div class="form-error">{{form.non_field_errors}}</div>
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Зарегистрироваться</button>
+</form>
+
+{% endblock %}

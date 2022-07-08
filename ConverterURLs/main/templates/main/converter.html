@@ -1,0 +1,14 @@
+{% extends 'main/layout.html' %}
+
+{% block content %}
+    <form action="{% url 'home' %}" method="post" enctype="multipart/form-data">
+    <div class="form-error">{{form.non_field_errors}}</div>
+        <div class="mb-3">
+    {% csrf_token %}
+    <label for="exampleInputEmail1" class="form-label">{{form.as_p}}</label>
+    <button type="submit">Сократить</button>
+        </div>
+</form>
+
+<h1>{{short_link}}</h1>
+{% endblock %}

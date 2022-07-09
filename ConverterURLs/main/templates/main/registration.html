@@ -3,9 +3,12 @@
 {% block content %}
     <form action="{% url 'registration' %}" method="post" enctype="multipart/form-data">
     <div class="form-error">{{form.non_field_errors}}</div>
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Зарегистрироваться</button>
+        <div class="mb-3">
+            {% csrf_token %}
+            <label for="exampleInputEmail1" class="form-label">{{form.as_p}}</label>
+            <br>
+            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+        </div>
 </form>
 
 {% endblock %}

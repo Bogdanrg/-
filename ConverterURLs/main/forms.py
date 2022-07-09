@@ -1,17 +1,18 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from .models import HistoryURLs
 
 
 class ConvertForm(forms.Form):
-    long_url = forms.CharField(label='URL для сокращения')
+    url = forms.CharField(label='URL для сокращения')
 
-    def clean_long_url(self):
-        long_url = self.cleaned_data['long_url']
-        if not long_url.startswith('https://'):
+    def clean_url(self):
+        url = self.cleaned_data['url']
+        if not url.startswith('https://'):
             raise ValidationError('URL должен начинаться с `https://`')
-        return long_url
+        return url
 
 
 class RegistrationUserForm(UserCreationForm):
@@ -29,3 +30,8 @@ class RegistrationUserForm(UserCreationForm):
         if '@gmail.com' not in data:
             raise ValidationError('email should contain `@gmail.com`')
         return data
+
+
+class LoginUserForm(AuthenticationForm):
+    username = forms.CharField(label='Name', widget=forms.TextInput(attrs={'class': 'form-input'}))
+    password = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'class': 'form-input'}))

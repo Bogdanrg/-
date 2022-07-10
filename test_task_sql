@@ -1,0 +1,17 @@
+USE test_task;
+SELECT bid.client_number, SUM(event_value.outcome = 'win' ) AS wins,
+			  SUM(event_value.outcome = 'lose') AS lose
+FROM bid
+JOIN event_value ON bid.play_id = event_value.play_id AND bid.coefficient = event_value.value
+GROUP BY client_number;
+
+
+
+USE test_task;
+SELECT  CONCAT(u.first , ' - ' ,u.second) AS game, COUNT(*)
+	FROM
+		(SELECT LEAST(home_team, away_team) AS first, GREATEST(home_team, away_team) AS second FROM event_entity) u
+GROUP BY u.first, u.second
+HAVING COUNT(*) >= 1
+ORDER BY COUNT(*)
+                        

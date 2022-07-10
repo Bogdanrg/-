@@ -1,6 +1,6 @@
 USE test_task;
 SELECT bid.client_number, SUM(event_value.outcome = 'win' ) AS wins,
-					      SUM(event_value.outcome = 'lose') AS lose
+			  SUM(event_value.outcome = 'lose') AS lose
 FROM bid
 JOIN event_value ON bid.play_id = event_value.play_id AND bid.coefficient = event_value.value
 GROUP BY client_number;

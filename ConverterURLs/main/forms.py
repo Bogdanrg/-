@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from .models import HistoryURLs
 
 
 class ConvertForm(forms.Form):
@@ -27,7 +26,7 @@ class RegistrationUserForm(UserCreationForm):
 
     def clean_email(self):
         data = self.cleaned_data['email']
-        if '@gmail.com' not in data:
+        if '@' not in data:
             raise ValidationError('email should contain `@gmail.com`')
         return data
 

@@ -1,11 +1,16 @@
 {% extends 'main/layout.html' %}
 
 {% block content %}
-
+{% if urls %}
     {% for i in urls %}
         <ul class="list-inline">
             <li class="list-inline-item">{{i.url}} <a href="{{i.url}}" target="_blank">  Перейти</a></li>
             <hr>
         </ul>
     {% endfor %}
+{% else %}
+    <p class="lead">
+        История пока пуста
+    </p>
+{% endif %}
 {% endblock %}

@@ -31,15 +31,6 @@ def convert_url(request):
     return render(request, template_name='main/converter.html', context={**c_def, **context})
 
 
-# class ConvertURL(FormView):
-# form_class = ConvertForm
-# template_name = 'main/converter.html'
-# success_url = reverse_lazy('home')
-
-# def get_context_data(self, *, object_list=None, **kwargs):
-# context = super().get_context_data(**kwargs)
-# return context
-
 class RegistrationUserView(CreateView):
     form_class = RegistrationUserForm
     success_url = reverse_lazy('login')

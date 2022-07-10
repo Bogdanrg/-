@@ -4,6 +4,8 @@ from django.contrib.auth.views import LoginView
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from pyshorteners.exceptions import BadURLException
+
 from .forms import *
 import pyshorteners
 from django.views.generic import CreateView, ListView
@@ -18,8 +20,11 @@ def convert_url(request):
         if form.is_valid():
             link = form.cleaned_data['url']
             s = pyshorteners.Shortener()
-            context['short_link'] = s.tinyurl.short(link)
-            form.cleaned_data['url'] = s.tinyurl.short(link)
+            try:
+                context['short_link'] = s.tinyurl.short(link)
+                form.cleaned_data['url'] = s.tinyurl.short(link)
+            except BadURLException:
+                context['short_link'] = 'Невозможно обработать URL'
             if request.user.is_authenticated:
                 user = User.objects.get(username=request.user.username)
                 form.cleaned_data['user'] = user

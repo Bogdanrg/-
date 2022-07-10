@@ -11,8 +11,14 @@
 </form>
 
 {% if short_link %}
+    {% if short_link == 'Невозможно обработать URL' %}
+        <p class="lead" >
+            {{short_link}}
+        </p>
+    {% else %}
     <p class="lead" >
         Укороченная ссылка: <a href="{{short_link}}" target="_blank">{{short_link}}</a>
     </p>
+    {% endif %}
 {% endif %}
 {% endblock %}

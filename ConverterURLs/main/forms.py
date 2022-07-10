@@ -5,13 +5,7 @@ from django.core.exceptions import ValidationError
 
 
 class ConvertForm(forms.Form):
-    url = forms.CharField(label='URL для сокращения')
-
-    def clean_url(self):
-        url = self.cleaned_data['url']
-        if not url.startswith('https://'):
-            raise ValidationError('URL должен начинаться с `https://`')
-        return url
+    url = forms.CharField(label='Полный URL для сокращения')
 
 
 class RegistrationUserForm(UserCreationForm):

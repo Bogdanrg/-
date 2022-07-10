@@ -21,7 +21,7 @@ class RegistrationUserForm(UserCreationForm):
     def clean_email(self):
         data = self.cleaned_data['email']
         if '@' not in data:
-            raise ValidationError('email should contain `@gmail.com`')
+            raise ValidationError('Введите существующий email')
         return data
 
 

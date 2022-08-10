@@ -17,7 +17,8 @@
         </p>
     {% else %}
     <p class="lead" >
-        Укороченная ссылка: <a href="{{short_link}}" target="_blank">{{short_link}}</a>
+        Укороченная ссылка: <a href="{{link_obj.get_absolute_url}}" target="_blank">http://127.0.0.1:8000/{{short_link}}</a>
+
     </p>
     {% endif %}
 {% endif %}

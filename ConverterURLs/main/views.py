@@ -5,12 +5,13 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from pyshorteners.exceptions import BadURLException
-
+from django.db.models import Count
 from .forms import *
 import pyshorteners
 from django.views.generic import CreateView, ListView
 from .models import *
 from django.contrib.auth.models import User
+from hashids import Hashids
 
 
 def convert_url(request):
@@ -18,17 +19,23 @@ def convert_url(request):
     if request.method == 'POST':
         form = ConvertForm(request.POST)
         if form.is_valid():
-            link = form.cleaned_data['url']
-            s = pyshorteners.Shortener()
             try:
-                context['short_link'] = s.tinyurl.short(link)
-                form.cleaned_data['url'] = s.tinyurl.short(link)
-            except BadURLException:
-                context['short_link'] = 'Невозможно обработать URL'
-            if request.user.is_authenticated:
-                user = User.objects.get(username=request.user.username)
-                form.cleaned_data['user'] = user
-                HistoryURLs.objects.create(**form.cleaned_data)
+                url_obj = URL.objects.get(long_url=form.cleaned_data['long_url'])
+            except :
+                url_obj = None
+            if not url_obj:
+                hashid = Hashids(salt=form.cleaned_data['long_url'])
+                short_url = hashid.encode(1, 2, 3)
+                form.cleaned_data['short_url'] = short_url
+                context['short_link'] = short_url
+                if request.user.is_authenticated:
+                    user = User.objects.get(username=request.user.username)
+                    form.cleaned_data['user'] = user
+                link_obj = URL.objects.create(**form.cleaned_data)
+                context['link_obj'] = link_obj
+            else:
+                context['link_obj'] = url_obj
+                context['short_link'] = url_obj.short_url
     else:
         form = ConvertForm()
     c_def = {'form': form, 'title': 'Главная страница'}
@@ -68,16 +75,21 @@ def logout_user(request):
 
 
 class HistoryView(LoginRequiredMixin, ListView):
-    model = HistoryURLs
+    model = URL
     context_object_name = 'urls'
     login_url = 'login'
     template_name = 'main/history.html'
     allow_empty = True
 
     def get_queryset(self):
-        return HistoryURLs.objects.filter(user=self.request.user.id)
+        return URL.objects.filter(user=self.request.user.id)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'История'
         return context
+
+
+def get_reurl(request, url_pk):
+    url_obj = URL.objects.get(pk=url_pk)
+    return redirect(url_obj.long_url)

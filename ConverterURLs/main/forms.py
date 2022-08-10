@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 
 
 class ConvertForm(forms.Form):
-    url = forms.CharField(label='Полный URL для сокращения')
+    long_url = forms.URLField(label='Полный URL для сокращения')
 
 
 class RegistrationUserForm(UserCreationForm):

@@ -8,5 +8,5 @@ urlpatterns = [
     path('login/', LoginUserView.as_view(), name='login'),
     path('history/', HistoryView.as_view(), name='history'),
     path('logout/', logout_user, name='logout'),
-    path('reurl/<int:url_pk>', get_reurl, name='reurl')
+    path('reurl/<int:url_pk>', get_redirect, name='reurl')
 ]

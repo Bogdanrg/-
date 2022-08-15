@@ -90,6 +90,6 @@ class HistoryView(LoginRequiredMixin, ListView):
         return context
 
 
-def get_reurl(request, url_pk):
+def get_redirect(request, url_pk):
     url_obj = URL.objects.get(pk=url_pk)
     return redirect(url_obj.long_url)

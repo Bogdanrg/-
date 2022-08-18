@@ -38,7 +38,6 @@ def convert_url(request):
                 form.cleaned_data['user'] = user
                 if not url_obj.user:
                     if url_obj.user != user:
-                        print(url_obj.user, url_obj.user.username, user)
                         URL.objects.create(**form.cleaned_data)
                 context['link_obj'] = url_obj
                 context['short_link'] = url_obj.short_url
